@@ -141,14 +141,14 @@ Spring 처음 나올 때는 경량이였다...
 
 
 
-* DI(Dependency Injection) 
+* DI(Dependency Injection)  -> 의존성 주입 ... spring이 객체를 만들면서 값을 전달(값을 주입)
 
 *  객체간의 결합을 느슨하게 하는 스프링의 핵심 기술
 
   의존관계를 관리하는 방법
 
-  1. Construction Injection
-  2. Setter Injection
+  1. Construction Injection	//<constructor-arg>
+  2. Setter Injection                //<property>
   3. Field Injection
 
   <img src="C:\Users\user\AppData\Roaming\Typora\typora-user-images\image-20200813143937177.png" alt="image-20200813143937177" style="zoom: 67%;" />
@@ -173,7 +173,7 @@ Spring 처음 나올 때는 경량이였다...
 
   
 
-  / IOC(Inversion of Control)
+  / IOC(Inversion of Control) -> 제어 역전... 객체 생성을 spring이 해준다!
 
 * <img src="C:\Users\user\AppData\Roaming\Typora\typora-user-images\image-20200813144143943.png" alt="image-20200813144143943" style="zoom:50%;" />
 
@@ -184,8 +184,9 @@ Spring 처음 나올 때는 경량이였다...
   dao 나 biz 만들 때 인터페이스 사용해야함(제대로 된 프록시 설정 가능)
 
 * AOP
-  * Aspect Oriented Programming [ Aspect 지향 프로그래밍 구현을 제공해 ]
-
+  
+* Aspect Oriented Programming [ Aspect 지향 프로그래밍 구현을 제공해 ]
+  
 * OCP
   * Open-Colsed Principle [ 객체지향프로그래밍의 특징 4개 중에서 캡슐화 ]
     개발자가 건들이지 말아야할 곳은 Closed가 되어있고, 확장이 가능한 곳은 Open되어있어.
@@ -248,4 +249,104 @@ ant, maven, gradle <- maven 대신 나머지 사용해서 공부 해보세요!!!
 
 
 <img src="C:\Users\user\AppData\Roaming\Typora\typora-user-images\image-20200813142801764.png" alt="image-20200813142801764" style="zoom:50%;" />
+
+
+
+# garbage collector
+
+* 자바자체에서 사용하지 않는 데이터들을 정리해주는 애
+* 개념을 쉽게 생각한다면 필요없는 쓰레기를 쓰레기통에 버린다! 라고 생각해보자
+
+
+
+
+
+* factory-method 
+  * 만들어주세요 라는 의미로 보자 어떤 메소드를 통해서 객체 생성
+
+* getInstance
+  *  다른이름으로 확인하는데 이 이름으로 객체를 생성할거고 이미 만들어져 있다면 만들어진 객체와 주소값이 동일
+
+
+
+* bean
+  *  태그 안에 생성자나 세터 태그 속성중 ref 는 참조하다라는 뜻을 가짐.
+
+
+
+# (ApplicationContext.xml)namespaces탭
+
+c : 생성자
+
+```xml
+<!-- c: constructor-arg -->
+<bean id="lee" class="com.test05.Emp" c:name="이순신" c:salary="500만원"></bean>
+<bean id="leess" class="com.test05.Engineer" c:emp-ref="lee" c:dept="기술팀"></bean>
+```
+
+p : property
+
+```xml
+<!-- p: property -->
+<bean id="park" class="com.test05.Emp" p:name="박진우" p:salary="500만원"></bean>
+<bean id="parks" class="com.test05.Developer" p:emp-ref="park" p:dept="개발팀"></bean>
+```
+
+---
+
+
+
+* lazy-init 속성
+  * 늦게 초기화
+  * 해당 빈이 호출 될 때까지 해당빈을 만들지 않는다.
+  * lazy-init을 안걸어주고 객체 생성 코드를 주석을 달아줘도 객체는 생성이 됨.
+
+```xml
+<bean id="ip" class="com.test07.ipTV"/>
+		
+	<bean id="samsong" class="com.test07.SamsongTV" lazy-init="true"></bean>
+```
+
+---
+
+
+
+# inner bean , ref 속성태그란?
+
+```xml
+<!-- 9.setScore(List<Score> list) 호출 : 2개는 inner bean, 1개는 ref -->
+		<property name="score">
+		<list>
+			<bean class="com.test01.Score">
+				<property name="name" value="박진우"></property>
+				<property name="kor" value="100"></property>
+				<property name="eng" value="70"></property>
+				<property name="math" value="80"></property>
+			</bean>
+			
+			<bean class="com.test01.Score">
+				<property name="name" value="병신"></property>
+				<property name="kor" value="100"></property>
+				<property name="eng" value="90"></property>
+				<property name="math" value="80"></property>
+			</bean>
+			<ref bean="kim"/>
+		</list>
+		</property>
+
+		<bean id="kim" class="com.test01.Score">
+			<constructor-arg name="name" value="김선달"></constructor-arg>
+			<constructor-arg name="kor" value="100"></constructor-arg>
+			<constructor-arg name="eng" value="75"></constructor-arg>
+			<constructor-arg name="math" value="34"></constructor-arg>
+		</bean>
+```
+
+세터 안에 bean태그를 쓰고, 그안에 맞는 세터 각각 name, value 값을 넣어 list로 뽑아주는 예제
+
+* inner bean은 생성자 인젝션, 세터 인젝션안에 사용할 수 있다.
+
+---
+
+@Annotation -> JVM이 일을 하기에 도와주는 기능
 
