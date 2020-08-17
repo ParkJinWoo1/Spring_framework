@@ -80,7 +80,7 @@
 			</bean>
 			
 			<bean class="com.test01.Score">
-				<property name="name" value="병신"></property>
+				<property name="name" value="ㅎㅎ"></property>
 				<property name="kor" value="100"></property>
 				<property name="eng" value="90"></property>
 				<property name="math" value="80"></property>

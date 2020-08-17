@@ -141,7 +141,7 @@ Spring 처음 나올 때는 경량이였다...
 
 
 
-* DI(Dependency Injection)  -> 의존성 주입 ... spring이 객체를 만들면서 값을 전달(값을 주입)
+* **DI(Dependency Injection)**  -> *의존성 주입* ... spring이 객체를 만들면서 값을 전달(값을 주입)
 
 *  객체간의 결합을 느슨하게 하는 스프링의 핵심 기술
 
@@ -173,7 +173,7 @@ Spring 처음 나올 때는 경량이였다...
 
   
 
-  / IOC(Inversion of Control) -> 제어 역전... 객체 생성을 spring이 해준다!
+  / **IOC(Inversion of Control)** -> 제어 역전... 객체 생성을 spring이 해준다!
 
 * <img src="C:\Users\user\AppData\Roaming\Typora\typora-user-images\image-20200813144143943.png" alt="image-20200813144143943" style="zoom:50%;" />
 
@@ -183,10 +183,44 @@ Spring 처음 나올 때는 경량이였다...
 
   dao 나 biz 만들 때 인터페이스 사용해야함(제대로 된 프록시 설정 가능)
 
-* AOP
-  
-* Aspect Oriented Programming [ Aspect 지향 프로그래밍 구현을 제공해 ]
-  
+* **AOP(Aspect Oriented Programming)**
+
+  *  [ Aspect(관점) 지향 프로그래밍 구현을 제공해 ]
+
+  * 관점기준으로 기능을 나눌거야 
+
+  * **CCC(Cross Cutting Concern)** - 공통 관심사항 . Logging, Transaction 등 (공통적인 부분 추출)
+
+  * **CC(Core Concern)** - 주 관심사항 (추출 후 남은 부분)
+
+    * Join Point - 호출할 수 있는 부분(들어갈 수 있는 부분)
+    * Point Cut - 어디에다가 CCC가 들어가야하는 부분을 알려주는것
+    * Advice - CC랑 CCC랑 나눠놓고 CCC의 실제코드(CCC의 구현체)를 뜻함
+    * Aspect(Advisor) - Advice 와 Point Cut이 합쳐진 것 -> 잘실행이 되야함!
+    * Weaving - Aspect가 실제로 CC에 엮는 행동, 전체 역할을 진행 후 return 되는 행동
+
+    
+
+  * **proxy** - 가로채는 애, target을 호출하기전엔 before메소드 호출, target호출, target호출 후엔 after 메소드 호출
+
+    * pointcut="execution(public * *(..))"	public에 return타입 상관없다(1이상) 메소드명 상관없음, 파라미터 0또는 그이상 ,,, 조건을 
+
+    * ```xml
+      <aop:config>
+      		<aop:aspect ref="myAspect">
+      			<aop:before method="before" pointcut="execution(public * com.test03.Man.classWork(..))"/>
+      									<!--public 메소드고 return타입 상관없음, man의 classwork를 호출하여 파라미터가 0또는 1이상 이면 before 출력-->
+      												
+      			<aop:after method="after" pointcut="execution(public * com.test03.Woman.classWork(..))"/>
+      									<!-- public에 리턴타입 상관없고, woman클래스가 가진 classwork메소드를 가진 파라미터 상관없고 after 출력 -->
+      		</aop:aspect>
+      	</aop:config>
+      ```
+
+      
+
+    
+
 * OCP
   * Open-Colsed Principle [ 객체지향프로그래밍의 특징 4개 중에서 캡슐화 ]
     개발자가 건들이지 말아야할 곳은 Closed가 되어있고, 확장이 가능한 곳은 Open되어있어.
@@ -350,3 +384,52 @@ p : property
 
 @Annotation -> JVM이 일을 하기에 도와주는 기능
 
+
+
+
+
+# Bean에서 autowire 속성
+
+* autowire = "constructor"
+  * Bean으로 등록된 Bean class의 인스턴스시 콜백되는 생성자에 선언된 파라미터 타입과
+  * 일치하는 설정파일에 등록된 빈이 존재하면 해당빈의 인스턴스를 생성자에 주입한다.
+
+* autowire ="byName"
+  * Bean으로 등록된 Bean class의 인스턴스 직후 설정파일에 선언된 다른 빈의 인스턴스를 주입될 
+  * 메서드 선언으로 취득 활용.(**메서드 선언시의 메서드 명 기준**)
+  * public void set + '주입을 받으려하는 자원의 빈등록시 id 또는 name 속성값'(주입 대상 타입 선언)
+
+* autowire ="byType"
+
+  * Bean으로 등록된 Bean class의 인스턴스 직후 설정파일에 선언된 다른 빈의 인스턴스를 주입될 메서드 선언으로 취득 활용.(**메서드 선언시의 메서드 타입 기준**)
+
+    public void set + '주입을 받으려하는 자원의 빈등록시 id 또는 name 속성값'(주입대상 타입 선언)
+
+* autowire ="no"
+  
+* Bean을 자동연결하지 않습니다. 직접 ref를 이용하여 명시적으로 연결해주어야 합니다.
+  
+* autowire ="default"
+
+  * ```
+    기본 'autowire'값. 'bean'요소의 'autowire'속성에 대한 문서를 참조하십시오. 기본값은 "default"이며 중첩의 경우 외부 'beans'섹션에서 상속을 나타내며, 그렇지 않으면 "no"(즉, 외부 구동 자동 연결 없음)로 대체됩니다.
+    ```
+
+* 쌤 정리
+
+  ```xml
+  <!-- 
+  		autowire 속성   byType 찾고 byName 찾음
+  		1.default : 생성자의 할당할 type이 있는지 확인 후 (constructor) -> 없으면, setter에					서 type이 있는지 확인하여 할당 (byType)
+  				**만일 기본생성자가 있으면, 기본생성자 호출
+  				**@Autowired 라는 어노테이션이 이 방식으로 동작
+  		2.byName : setter와 같은 이름(id/name)의 bean을 찾아서 자동 할당
+  		3.byType : setter와 같은 type의 bean을 찾아서 자동할당
+  		4.constructor : 생성자의 parameter와 같은 이름(type)의 bean을 찾아서 자동 할당
+  						매치가 하나라도 안된다면 나머지 null 뜸.
+  	 -->
+  ```
+
+  +++
+
+  

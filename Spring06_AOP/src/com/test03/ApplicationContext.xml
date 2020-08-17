@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+
+	
+	<!-- namespaces 에서 aop 추가 -->
+	
+	<aop:aspectj-autoproxy />
+
+	<bean id="man" class="com.test03.Man"/>
+	<bean id="woman" class="com.test03.Woman"/>
+	<bean id="myAspect" class="com.test03.MyAspect"/>
+	
+	
+	<aop:config>
+		<aop:aspect ref="myAspect">
+			<aop:before method="before" pointcut="execution(public void com.test03.Woman.classWork())"/>
+									<!--execution(public * com.test03.Woman.classWork(..))  public 메소드고 return타입 상관없음, man의 classwork를 호출하여 파라미터가 0또는 1이상 이면 before 출력-->
+												
+			<aop:after method="after" pointcut="execution(public void com.test03.Man.classWork())"/>
+									<!--execution(public * com.test03.Man.classWork(..)) public에 리턴타입 상관없고, woman클래스가 가진 classwork메소드를 가진 파라미터 상관없고 after 출력 -->
+		</aop:aspect>
+	</aop:config>
+	
+
+
+</beans>
