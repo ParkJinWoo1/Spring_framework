@@ -2,6 +2,7 @@ package com.test01;
 
 public class MessageBeanImpl implements MessageBean {
 
+	
 	private String fruit;
 	private int cost;
 	

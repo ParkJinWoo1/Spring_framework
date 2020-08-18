@@ -5,6 +5,10 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
 
+	<context:annotation-config/>
 	<context:component-scan base-package="com.test03"></context:component-scan>
-
+	<bean id="a" class="java.lang.String"/>
+	<bean id="b" class="java.lang.String"/>
+	<bean id="c" class="java.lang.String"/>
+	
 </beans>

@@ -1,5 +1,7 @@
 package com.test02;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -10,11 +12,10 @@ public class Address {
 	private String phone;
 	
 	public Address() {
-//		this.name = "박";
-//		this.addr = "중랑";
-//		this.phone = "010-000-0000";
+
 	}
-	public Address(String name, String addr, String phone) {
+	@Autowired
+	public Address(@Qualifier("a")String name,@Qualifier("b") String addr,@Qualifier("c") String phone) {
 		this.name = name;
 		this.addr = addr;
 		this.phone = phone;
