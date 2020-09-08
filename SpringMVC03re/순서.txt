@@ -1,0 +1,5 @@
+SpringMVC03
+1. pom.xml : ojdbc6.jar / mybatis, mybatis-spring/ commons-dbcp/ spring-orm
+2. web.xml 
+3. myboard.sql (/WEB-INF/spring/sqls/myboard.sql)
+4. BoardDto, BoardDao(Impl), BoardBiz(Impl), BoardController
