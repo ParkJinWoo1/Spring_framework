@@ -1,0 +1,30 @@
+Spring MVC 03_01
+
+1. pox.xml : ojdbc6.jar, Mybatis, Mybatis-spring, commones-dbcp, spring-orm
+2. web.xml
+3. myboard.sql (/WEB-INF/spring/sqls/myboard.sql)
+4. BoardDto, BoardDao(Impl), BoardBiz(Impl), BoardController
+5. board-mapper.xml (src/main/resources/mybatis/board-mapper.xml) 
+6. db.properties (src/main/resources/mybatis/db.properties)
+7. config.xml (/WEB-INF/spring/sqls/config.xml)
+8. applicationContext.xml
+
+_Filter
+9. LogFilter (com.mvc.upgrade.common.filter.LogFilter) impl javax.servlet.Filter
+10. web.xml 
+
+_Aop
+11. pom.xml : org.aspectj.(aspectjrt, aspectjweaver)
+12. LogAop (com.mvc.upgrade.common.aop.LogAop)
+13. aop-context.xml (WEB-INF/spring/appServlet/aop-context.xml)
+14. web.xml
+15. log4j.xml (src/main/resources/log4j.xml)
+
+_Login
+16. pom.xml : jackson-core-asl, jackson-mapper-asl(spring 4.x부터는 jackson-core/jackson-databind 사용해야 함)
+17. mymember.sql (WEB-INF/spring/sqls/mymember.sql)
+18. MemberDto, MemberDao, MemberBiz, MemberController
+19. member-mapper.xml (src/main/resources/mybatis/member-mapper.xml)
+20. config.xml (WEB-INF/spring/sqls/config.xml)
+
+
